@@ -1,0 +1,26 @@
+version: "3.3"
+services:
+  redis:
+    image: redis
+    networks: 
+      - webnet
+  web:
+    build: .
+    networks: 
+      - webnet
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      REDIS_URL: redis://redis
+      MONGODB_URL: mongodb+srv://mehmet1234:mehmet1234@cluster0.ikkbc.mongodb.net/Users?retryWrites=true&w=majority
+  nginx:
+    image: nginx2
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - webnet
+networks:
+  webnet:
